@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .card-text * {
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        white-space: normal !important;
+    }
+</style>
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            {% if object.photo %}
+                <img src="{{ object.photo.url }}" class="card-img-top img-fluid" alt="{{ object.title }}">
+            {% endif %}
+
+            <h1 class="card-title">{{ object.title }}</h1>
+            <h6 class="card-subtitle mb-2 text-muted">
+                Author: {{ object.author }} | {{ object.date }}
+            </h6>
+
+            <div class="card-text">
+                {{ object.body|safe }}
+            </div>
+
+            <div style="margin-top: 10px;">
+                <a href="{% url 'article_edit' object.pk %}">Edit</a> |
+                <a href="{% url 'article_delete' object.pk %}">Delete</a> |
+                <a href="{% url 'article_list' %}">All articles</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Comments</div>
+            {% for comment in object.comments.all %}
+                <div class="card-body">
+                    <backquote class="backquote mb-0">
+                        <p>{{ comment }}</p>
+                        <footer class="blockquote-footer">{{ comment.author }}</footer>
+                    </backquote>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}
